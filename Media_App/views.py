@@ -42,11 +42,22 @@ def Rankings(request):
         cursor.execute("""
                     SELECT genre FROM GenresWithMoreThanFiveP
     """)
-    sql_res1 = dictfetchall(cursor)
+        sql_res1 = dictfetchall(cursor)
     return render(request, 'Rankings.html', {'sql_res1': sql_res1})
 
 def Records(request):
     return render(request,'Records.html')
 # Create your views here.
 
-
+# QUERY 5
+# SELECT TOP 5 PRT.title,genre,Rank_Times,
+#        CASE
+#            WHEN Rank_Times<=6 THEN 0
+#            WHEN Rank_Times IS NULL THEN 0
+#            ELSE rank
+#            END AS Updated_Rank
+# FROM ProgramsRankTime PRT
+#     LEFT JOIN Programs_AVG_Rank PAR
+#         ON PAR.title=PRT.title
+# WHERE genre ='Action'
+# ORDER BY genre,Updated_Rank DESC,title ASC
