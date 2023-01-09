@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db import connection
 from .models import *
 
+
 def dictfetchall(cursor):
     # Returns all rows from a cursor as a dict '''
     columns = [col[0] for col in cursor.description]
@@ -38,13 +39,187 @@ ORDER BY rank DESC ,LR.title
 
         return render(request, 'Query.html', {'sql_res': sql_res, 'sql_res2': sql_res2, 'sql_res3': sql_res3})
 
-def Rankings(request):
+def Rankings(request,X=9999,genre = 'defValue'):
     with connection.cursor() as cursor:
         cursor.execute("""
                     SELECT genre FROM GenresWithMoreThanFiveP
-    """)
+        """)
         sql_res1 = dictfetchall(cursor)
-    return render(request, 'Rankings.html', {'sql_res1': sql_res1})
+
+        cursor.execute("""
+                            select hid from Households
+                        """)
+        sql_res_hid = dictfetchall(cursor)
+
+        cursor.execute("""
+                                    select title from Programs
+                                """)
+        sql_res_programs_names = dictfetchall(cursor)
+
+
+
+        cursor.execute("""select distinct genre, count(distinct title) as CountPrograms
+                            from Programs
+                            where genre is not null
+                            group by genre
+                            HAVING count(distinct title)>=5
+                                               """)
+        at_least_five = dictfetchall(cursor)
+
+        cursor.execute("""
+        select title,count(title) countRanks
+                            from ProgramRanks
+                            group by title
+                            having count(title) >= %s;
+                                                       """, [X])
+        spoken_program = dictfetchall(cursor)
+
+        cursor.execute("""select top 5 genre,pr.title,round(avg(cast(pr.rank as float)),2) as Average_Rank
+        from ProgramRanks pr, (select pp.title,count(pp.title) countRanks ,min(p.genre)  as genre
+                                    from ProgramRanks pp,Programs p
+                                    where pp.title = p.title and genre = %s -- put here the parameter
+                                    group by pp.title
+                                    having count(pp.title) >= %s) as Spoken
+        where Spoken.title = pr.title and genre is not null
+        group by genre,pr.title
+        order by round(avg(cast(pr.rank as float)),2) desc""", [genre, X])
+
+        top_five_spoken_genre = dictfetchall(cursor)
+
+
+        cursor.execute(""" select title, 0 as Average_Rank
+                            from  Programs p1
+                            where title not in (select pr.title
+                                    from ProgramRanks pr, (select pp.title,count(pp.title) countRanks ,min(p.genre)  as genre
+                                                                from ProgramRanks pp,Programs p
+                                                                where pp.title = p.title and p.genre = %s -- put here the parameter
+                                                                and p1.genre = p.genre
+                                                                group by pp.title
+                                                                having count(pp.title) >= %s) as Spoken
+                                    where Spoken.title = pr.title) and genre is not null
+                                    """, [genre, X])
+        not_spoken_titles = dictfetchall(cursor)
+
+        how_many_add = 5 - len(top_five_spoken_genre)
+        if how_many_add > 0 and genre != 'defValue':
+            for i in range(how_many_add):
+                top_five_spoken_genre.append(not_spoken_titles[i])
+
+#רשימה של מילונים
+
+    return render(request, 'Rankings.html', {'sql_res1': sql_res1, 'sql_res_hid': sql_res_hid,
+                                             'sql_res_programs_names': sql_res_programs_names,
+                                             'at_least_five': at_least_five,'spoken_program': spoken_program,
+                                             'top_five_spoken_genre': top_five_spoken_genre})
+
+def addNewRank(request):
+    if request.method == 'POST' and request.POST:
+        title = request.POST["title"]
+        hid = request.POST["hID"]
+        rank = request.POST["rank"]
+
+        new_content = Programranks(title = Programs(title),
+                              hid= Households(hid),
+                              rank = int(rank))
+        new_content.save()
+    return Rankings(request)
+
+
+
+
+
+
+
+def submitNumber(request):
+    if request.method == 'POST' and request.POST:
+        X = request.POST["minNumber"]
+        genre = request.POST["genre"]
+        return Rankings(request, X, genre)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def Records(request,OrderNotApproved=False,cause="",ReturnNotApproved=False,cause_1=""):
     with connection.cursor() as cursor:
