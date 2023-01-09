@@ -22,15 +22,69 @@
       </div>
     </nav> </header>
 <div class="container">
-<form>
+
+<form method="POST" action="addNewRank">
 {% csrf_token %}
-<select>
-{% for item in sql_res1 %}
-    <option value="{{ item.genre }}">{{ item.genre }}</option>
+Select Hid <select name="hID" required>
+<option selected="true" disabled = "disabled" value="">-- Select an option --</option>
+{% for item in sql_res_hid %}
+    <option>{{ item.hid }}</option>
     {% endfor %}
 </select>
+<br>
+
+Select Program Name <select  name="title" required>
+<option selected="true" disabled = "disabled" value="">-- Select an option --</option>
+{% for item in sql_res_programs_names %}
+    <option>{{ item.title }}</option>
+    {% endfor %}
+</select>
+<br>
+Select rank <select name="rank" required>
+    <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
+    <option value=1>1</option>
+    <option value=2>2</option>
+    <option value=3>3</option>
+    <option value=4>4</option>
+    <option value=5>5</option>
+</select>
+<br>
+<button>Submit</button>
 </form>
+<br>
+<br>
+
+
+
+<form method="POST", action="submitNumber">
+    Select Genre (at least 5 programs belongs to each)
+    <select name="genre" required>
+    <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
+    {% for item in at_least_five %}
+        <option>{{ item.genre }}</option>
+    {% endfor %}
+    </select>
+    {% csrf_token %}
+    Min Rank: <input type="number" name = "minNumber" required><br></select>
+<button name="getSpoken">Get Spoken Programs</button>
+</form>
+
+<br>
+<h5>Spoken Programs</h5>
+    <table border="=1">
+    <th>Title</th>
+    <th>Average Rank</th>
+        {% for content in top_five_spoken_genre %}
+            <tr>
+            <td>{{ content.title }} </td>
+            <td>{{ content.Average_Rank}} </td>
+            </tr>
+        {% endfor %}
+
+</table>
+
 </div>
+
 
 
 
