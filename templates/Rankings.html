@@ -1,0 +1,39 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Al-Netek!</title>
+</head>
+<body>
+
+<script src="https://kit.fontawesome.com/7ce0912b14.js" crossorigin="anonymous"></script>
+  <header>
+    <nav id="navbar">
+      <div class="container">
+        <h1 class="logo"><a href="index.html"><i class="fas fa-tv " id="NETEK"> </i> AL-</a><a href="index.html" >NETEK.</a></h1>
+        <ul>
+          <li><a  href="index">Home</a></li>
+          <li><a  href="Query">Query Result</a></li>
+          <li><a href="Records">Records Management</a></li>
+            <li><a class="current" href="Rankings">Rankings</a></li>
+        </ul>
+      </div>
+    </nav> </header>
+<div class="container">
+<form>
+{% csrf_token %}
+<select>
+{% for item in sql_res1 %}
+    <option value="{{ item.genre }}">{{ item.genre }}</option>
+    {% endfor %}
+</select>
+</form>
+</div>
+
+
+
+
+
+</body>
