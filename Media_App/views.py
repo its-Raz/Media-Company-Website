@@ -151,11 +151,12 @@ def returnRecord(request):
 
 
         Recordorders.objects.filter(pk=input_title).delete()
-        # new_content = Programs(title=input_title)
-        # new_content.save()
-        # new_content = Households(hid=input_hid)
-        # new_content.save()
-        # new_content = Recordreturns(title=Programs(input_title), hid=Households(input_hid))
-        # new_content.save()
+        # Recordorders.refresh_from_db(self=Recordorders,using=None,fields=None)
+        new_content = Programs(title=input_title)
+        new_content.save()
+        new_content = Households(hid=input_hid)
+        new_content.save()
+        new_content = Recordreturns(title=Programs(input_title), hid=Households(input_hid))
+        new_content.save()
         return Records(request, False, "", False, "")
 
