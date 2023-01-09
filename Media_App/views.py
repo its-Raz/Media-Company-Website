@@ -126,7 +126,7 @@ def addNewRank(request):
         new_content.save()
     return Rankings(request)
 
-
+#
 
 
 
