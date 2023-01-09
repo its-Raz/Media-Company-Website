@@ -8,7 +8,7 @@ path('index',views.index, name='index'),
 path('Rankings', views.Rankings, name='Rankings'),
 path('Records', views.Records, name='Records'),
 path('addNewRank', views.addNewRank, name='addNewMovie'),
-path('submitNumber', views.submitNumber, name='submitNumber')
+path('submitNumber', views.submitNumber, name='submitNumber'),
 path('orderNewRecord', views.orderNewRecord, name='orderNewRecord'),
 path('returnRecord', views.returnRecord, name='returnRecord'),
 

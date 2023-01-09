@@ -117,13 +117,14 @@ def addNewRank(request):
         title = request.POST["title"]
         hid = request.POST["hID"]
         rank = request.POST["rank"]
+
         new_content = Programranks(title = Programs(title),
-                              hid = Households(hid),
+                              hid= Households(hid),
                               rank = int(rank))
         new_content.save()
     return Rankings(request)
 
-#
+
 
 
 
