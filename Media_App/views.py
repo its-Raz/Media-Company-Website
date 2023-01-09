@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db import connection
+from .models import *
 
 def dictfetchall(cursor):
     # Returns all rows from a cursor as a dict '''
@@ -45,19 +46,116 @@ def Rankings(request):
         sql_res1 = dictfetchall(cursor)
     return render(request, 'Rankings.html', {'sql_res1': sql_res1})
 
-def Records(request):
-    return render(request,'Records.html')
-# Create your views here.
+def Records(request,OrderNotApproved=False,cause="",ReturnNotApproved=False,cause_1=""):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT TOP 3 hID,COUNT(title) AS Total_Orders FROM Ever_Ordered GROUP BY hID ORDER BY Total_Orders DESC,hID
+    """)
+        sql_res1 = dictfetchall(cursor)
 
-# QUERY 5
-# SELECT TOP 5 PRT.title,genre,Rank_Times,
-#        CASE
-#            WHEN Rank_Times<=6 THEN 0
-#            WHEN Rank_Times IS NULL THEN 0
-#            ELSE rank
-#            END AS Updated_Rank
-# FROM ProgramsRankTime PRT
-#     LEFT JOIN Programs_AVG_Rank PAR
-#         ON PAR.title=PRT.title
-# WHERE genre ='Action'
-# ORDER BY genre,Updated_Rank DESC,title ASC
+    return render(request, 'Records.html', {'sql_res1': sql_res1,'OrderNotApproved':OrderNotApproved,'cause':cause,
+                                            'ReturnNotApproved':ReturnNotApproved,'cause_1':cause_1})
+# Create your views here.
+def programExist(input_title):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT title,genre FROM Programs
+    """)
+        allTitles = dictfetchall(cursor)
+    for row in allTitles:
+        if row['title'] == input_title:
+            return True
+    return False
+
+
+def orderNewRecord(request):
+    if request.method == 'POST' and request.POST:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT title,genre FROM Programs
+        """)
+            allTitles = dictfetchall(cursor)
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT hID FROM FamilyNumOfOrders WHERE NumberOfOrders=3
+        """)
+            famWithThree = dictfetchall(cursor)
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT * FROM RecordOrders
+        """)
+            alreadyOrdered = dictfetchall(cursor)
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT * FROM RecordReturns
+        """)
+            recordReturns = dictfetchall(cursor)
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT hID
+                        FROM Households
+                        WHERE hID
+                        NOT IN
+                         (SELECT hID FROM HouseHoldsZeroChildren)
+                                                                 """)
+            famsWithChildren = dictfetchall(cursor)
+        input_hid = request.POST["hid"]
+        input_title = request.POST["title"]
+        if programExist(input_title) == False:
+            return Records(request, True, "Title does not exist!",False,"")
+        for row in famWithThree:
+            if int(row['hID']) == int(input_hid):
+                return Records(request, True, "Family is Already holds 3 titles!",False,"")
+        for row in alreadyOrdered:
+            if row['title']==input_title:
+                if int(row['hID']) != int(input_hid):
+                    return Records(request, True, "The movie is ordered by another family and yet to be returned!",False,"")
+                if int(row['hID']) == int(input_hid):
+                    return Records(request, True, "The movie is ordered by this family!",False,"")
+        for row in recordReturns:
+            if row['title'] == input_title and int(row['hID']) == int(input_hid):
+                return Records(request, True, "The movie was already ordered by this family before!",False,"")
+        for row in famsWithChildren:
+            if int(row['hID']) == int(input_hid):
+                for row in allTitles:
+                    if row['title'] == input_title:
+                        if str(row['genre'])==str("Reality") or str(row['genre'])==str("Adults Only"):
+                            return Records(request, True, "The program genre is restricted to families with children!",False,"")
+
+
+        new_content = Programs(title=input_title)
+        new_content.save()
+        new_content = Households(hid=input_hid)
+        new_content.save()
+        new_content = Recordorders(title=Programs(input_title),hid=Households(input_hid))
+        new_content.save()
+        return Records(request,False,"",False,"")
+
+
+
+def returnRecord(request):
+    if request.method == 'POST' and request.POST:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                        SELECT * FROM RecordOrders
+        """)
+            alreadyOrdered = dictfetchall(cursor)
+        input_hid = request.POST["hid_2"]
+        input_title = request.POST["title_2"]
+        if (programExist(input_title) == False):
+            return Records(request, False, "",True,"Title does not exist!")
+        for row in alreadyOrdered:
+            if row['title']==input_title:
+                if int(row['hID']) != int(input_hid):
+                    return Records(request,False,"", True, "The family does not hold this title")
+
+
+        Recordorders.objects.filter(pk=input_title).delete()
+        # new_content = Programs(title=input_title)
+        # new_content.save()
+        # new_content = Households(hid=input_hid)
+        # new_content.save()
+        # new_content = Recordreturns(title=Programs(input_title), hid=Households(input_hid))
+        # new_content.save()
+        return Records(request, False, "", False, "")
+

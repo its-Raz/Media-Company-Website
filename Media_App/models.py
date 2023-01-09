@@ -18,8 +18,18 @@ class Households(models.Model):
         db_table = 'Households'
 
 
+class Programs(models.Model):
+    title = models.CharField(primary_key=True, max_length=45)
+    genre = models.CharField(max_length=25, blank=True, null=True)
+    duration = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Programs'
+
+
 class Programranks(models.Model):
-    title = models.OneToOneField('Programs', models.DO_NOTHING, db_column='title', primary_key=True)
+    title = models.OneToOneField(Programs, models.DO_NOTHING, db_column='title', primary_key=True)
     hid = models.ForeignKey(Households, models.DO_NOTHING, db_column='hID')  # Field name made lowercase.
     rank = models.IntegerField(blank=True, null=True)
 
@@ -29,14 +39,6 @@ class Programranks(models.Model):
         unique_together = (('title', 'hid'),)
 
 
-class Programs(models.Model):
-    title = models.CharField(primary_key=True, max_length=45)
-    genre = models.CharField(max_length=25, blank=True, null=True)
-    duration = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Programs'
 
 
 class Recordorders(models.Model):

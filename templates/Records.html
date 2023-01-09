@@ -1,4 +1,5 @@
 {% load static %}
+{% csrf_token %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <!DOCTYPE html>
 <html lang="en">
@@ -21,3 +22,47 @@
         </ul>
       </div>
     </nav> </header>
+<div class="container">
+    <h1>Records Management</h1>
+    <h3>Order</h3>
+    {% if OrderNotApproved == True %}
+        <h4>NOT APPROVED due to {{ cause }}</h4>
+    {% endif %}
+
+
+
+    <form method="POST" action="orderNewRecord">
+        {% csrf_token %}
+        <h4>hID:</h4>
+        <input  type="number"  name="hid" required>
+        <h4>Title:</h4>
+        <input  type="text"  name="title" required>
+        <button>SUBMIT</button>
+    </form>
+<h3>Return</h3>
+{% if ReturnNotApproved == True %}
+        <h4>NOT APPROVED due to {{ cause_1 }}</h4>
+    {% endif %}
+<form method="POST" action="returnRecord">
+    {% csrf_token %}
+        <h4>hID:</h4>
+        <input  type="number"  name="hid_2" required>
+        <h4>Title:</h4>
+        <input  type="text"  name="title_2" required>
+    <button>SUBMIT</button>
+    </form>
+
+
+
+       <table border="=1" >
+    <th>hID</th>
+    <th>Total Orders</th>
+        {% for item in sql_res1%}
+            <tr>
+            <td>{{ item.hID }} </td>
+            <td>{{ item.Total_Orders }} </td>
+            </tr>
+        {% endfor %}
+</table>
+</div>
+</body>

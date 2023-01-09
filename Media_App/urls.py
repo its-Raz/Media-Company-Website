@@ -7,6 +7,8 @@ path('index',views.index, name='index'),
     path('Query', views.Query, name='Query'),
 path('Rankings', views.Rankings, name='Rankings'),
 path('Records', views.Records, name='Records'),
+path('orderNewRecord', views.orderNewRecord, name='orderNewRecord'),
+path('returnRecord', views.returnRecord, name='returnRecord'),
 
 
 
