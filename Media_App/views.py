@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.db import connection
 from .models import *
+from django.core.cache import cache
+from django.shortcuts import HttpResponseRedirect
 
 
 def dictfetchall(cursor):
@@ -286,7 +288,7 @@ def orderNewRecord(request):
                 if int(row['hID']) != int(input_hid):
                     return Records(request, True, "The movie is ordered by another family and yet to be returned!",False,"")
                 if int(row['hID']) == int(input_hid):
-                    return Records(request, True, "The movie is ordered by this family!",False,"")
+                    return Records(request, True, "The program is ordered by this family already!",False,"")
         for row in recordReturns:
             if row['title'] == input_title and int(row['hID']) == int(input_hid):
                 return Records(request, True, "The movie was already ordered by this family before!",False,"")
@@ -297,13 +299,6 @@ def orderNewRecord(request):
                         if str(row['genre'])==str("Reality") or str(row['genre'])==str("Adults Only"):
                             return Records(request, True, "The program genre is restricted to families with children!",False,"")
 
-
-        new_content = Programs(title=input_title)
-        new_content.save()
-        new_content = Households(hid=input_hid)
-        new_content.save()
-        new_content = Recordorders(title=Programs(input_title),hid=Households(input_hid))
-        new_content.save()
         return Records(request,False,"",False,"")
 
 
@@ -312,26 +307,33 @@ def returnRecord(request):
     if request.method == 'POST' and request.POST:
         with connection.cursor() as cursor:
             cursor.execute("""
-                        SELECT * FROM RecordOrders
-        """)
+                               SELECT * FROM RecordOrders
+               """)
             alreadyOrdered = dictfetchall(cursor)
+        connection.close()
         input_hid = request.POST["hid_2"]
         input_title = request.POST["title_2"]
         if (programExist(input_title) == False):
-            return Records(request, False, "",True,"Title does not exist!")
+            return Records(request, False, "", True, "Title does not exist!")
+        titleOrdered=False
         for row in alreadyOrdered:
-            if row['title']==input_title:
+            if row['title'] == input_title:
+                titleOrdered=True
                 if int(row['hID']) != int(input_hid):
-                    return Records(request,False,"", True, "The family does not hold this title")
+                    return Records(request, False, "", True, "The family does not hold this title")
+        if titleOrdered!=True:
+            return Records(request, False, "", True, "Title is not exist in the order list")
+        try:
+            record_order = Recordorders.objects.get(pk=input_title)
+            record_order.delete()
+            with connection.cursor() as cursor:
+                cursor.execute("""INSERT INTO RecordReturns (title, hID) VALUES (%s, %s)""",[input_title,input_hid])
+            connection.close()
+        except Recordorders.DoesNotExist:
+            # Handle the exception
+            return Records(request, False, "",True,"exception")
+        cause="Return the program " + input_title + " for family number " + input_hid + " was successfully done"
 
 
-        Recordorders.objects.filter(pk=input_title).delete()
-        # Recordorders.refresh_from_db(self=Recordorders,using=None,fields=None)
-        new_content = Programs(title=input_title)
-        new_content.save()
-        new_content = Households(hid=input_hid)
-        new_content.save()
-        new_content = Recordreturns(title=Programs(input_title), hid=Households(input_hid))
-        new_content.save()
-        return Records(request, False, "", False, "")
+        return Records(request,False,"",True,cause)
 

@@ -30,27 +30,40 @@
     {% endif %}
 
 
-
+<div id="box">
     <form method="POST" action="orderNewRecord">
         {% csrf_token %}
-        <h4>hID:</h4>
-        <input  type="number"  name="hid" required>
-        <h4>Title:</h4>
+        <div id="input-box">
+        <input id="input-field"  type="number"  name="hid" required>
+        <label>House Hold ID</label>
+        </div>
+        <div id="input-box">
         <input  type="text"  name="title" required>
-        <button>SUBMIT</button>
+        <button id="submitbtn">SUBMIT</button>
+            <label>Title</label>
+        </div>
+
     </form>
+</div>
 <h3>Return</h3>
 {% if ReturnNotApproved == True %}
         <h4>NOT APPROVED due to {{ cause_1 }}</h4>
     {% endif %}
+<div id="box2">
 <form method="POST" action="returnRecord">
     {% csrf_token %}
-        <h4>hID:</h4>
+    <div id="input-box">
         <input  type="number"  name="hid_2" required>
-        <h4>Title:</h4>
+            <label>House Hold ID</label>
+    </div>
+    <div id="input-box">
         <input  type="text"  name="title_2" required>
-    <button>SUBMIT</button>
-    </form>
+            <label>Title</label>
+    </div>
+        <button id="submitbtn">SUBMIT</button>
+          </form>
+</div>
+
 
 
 
