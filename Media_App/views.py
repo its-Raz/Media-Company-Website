@@ -43,7 +43,7 @@ ORDER BY rank DESC ,LR.title
         sql_res2 = dictfetchall(cursor)
 
         cursor.execute("""
-        SELECT title FROM HIGH_LEVEL_PROGRAM WHERE title NOT IN (SELECT title FROM ProgramRanks WHERE rank<2) ORDER BY title ASC
+        SELECT title FROM High_Level_Program WHERE title NOT IN (SELECT title FROM ProgramRanks WHERE rank<2) ORDER BY title ASC
                            
                             """)
         sql_res3 = dictfetchall(cursor)
