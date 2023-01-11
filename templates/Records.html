@@ -23,20 +23,21 @@
       </div>
     </nav> </header>
 <div class="container">
+<div id="title">
     <h1>Records Management</h1>
-    <h3>Order</h3>
+</div>
     {% if SubmitSent == True %}
         <h4>{{ cause }}</h4>
     {% endif %}
 
 
-<div id="box">
-    <h2>ORDER NEW RECORD</h2>
+    <div id="box">
+    <h1 id="box-title">ORDER</h1>
     <form method="POST" action="orderNewRecord">
         {% csrf_token %}
         <div id="input-box">
         <input id="input-field"  type="number"  name="hid" required>
-        <label>House Hold ID</label>
+        <label id="hidlabel">HouseHold ID</label>
         </div>
         <div id="input-box">
         <input  type="text"  name="title" required>
@@ -45,15 +46,16 @@
         </div>
 
     </form>
-</div>
-<h3>Return</h3>
+    </div>
 
-<div id="box2">
-<form method="POST" action="returnRecord">
+
+    <div id="box2">
+    <h1 id="box-title">RETURN</h1>
+     <form method="POST" action="returnRecord">
     {% csrf_token %}
     <div id="input-box">
-        <input  type="number"  name="hid_2" required>
-            <label>house Hold ID</label>
+        <input   type="number"  name="hid_2" required>
+            <label id="hidlabel">HouseHold ID</label>
     </div>
     <div id="input-box">
         <input  type="text"  name="title_2" required>
@@ -61,7 +63,7 @@
     </div>
         <button id="submitbtn">SUBMIT</button>
           </form>
-</div>
+       </div>
 
 
 
@@ -75,6 +77,8 @@
             <td>{{ item.Total_Orders }} </td>
             </tr>
         {% endfor %}
-</table>
+     </table>
+
 </div>
+
 </body>
