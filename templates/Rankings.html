@@ -76,7 +76,7 @@ Select rank <select name="rank" required>
     </select>
 <br>
     {% csrf_token %}
-    Min Rank <input type="number" min="0" name = "minNumber" required><br></select>
+    Min Rank <input type="number" max="1000000000" pattern="[0-9]+" min="0" name = "minNumber" required><br></select>
 <br>
 <button name="getSpoken">Get Spoken Programs</button>
 <br>
