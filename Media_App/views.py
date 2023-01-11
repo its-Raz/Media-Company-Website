@@ -223,15 +223,17 @@ def submitNumber(request):
 
 
 
-def Records(request,OrderNotApproved=False,cause="",ReturnNotApproved=False,cause_1=""):
+def Records(request,SubmitSent=False,cause=""):
     with connection.cursor() as cursor:
         cursor.execute("""
                     SELECT TOP 3 hID,COUNT(title) AS Total_Orders FROM Ever_Ordered GROUP BY hID ORDER BY Total_Orders DESC,hID
     """)
         sql_res1 = dictfetchall(cursor)
 
-    return render(request, 'Records.html', {'sql_res1': sql_res1,'OrderNotApproved':OrderNotApproved,'cause':cause,
-                                            'ReturnNotApproved':ReturnNotApproved,'cause_1':cause_1})
+    return render(request, 'Records.html', {'sql_res1': sql_res1,'SubmitSent':SubmitSent,'cause':cause})
+
+
+###################################################################
 # Create your views here.
 def programExist(input_title):
     with connection.cursor() as cursor:
@@ -243,64 +245,130 @@ def programExist(input_title):
         if row['title'] == input_title:
             return True
     return False
+###################################################################
+def hidExist(input_hid):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT hid FROM Households WHERE hid=%s
+    """,[input_hid])
+        allHid = dictfetchall(cursor)
+    if len(allHid) !=0:
+        return True
+    return False
+###################################################################
+def alreadyHoldsThree(input_hid):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT hID FROM FamilyNumOfOrders WHERE NumberOfOrders=3 AND hID=%s
+    """,[input_hid])
+        famWithThree = dictfetchall(cursor)
+    if len(famWithThree) !=0:
+        return True
+    return False
+###################################################################
+def isFamilyWithChildren(input_hid):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT hID
+                    FROM Households
+                    WHERE hID = %s
+                    AND hID NOT IN
+                     (SELECT hID FROM HouseHoldsZeroChildren)
+                                                             """,[input_hid])
+        famsWithChildren = dictfetchall(cursor)
+    if len(famsWithChildren) !=0:
+        return True
+    return False
+###################################################################
+def isRestrictedGenre(input_title):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT title,genre FROM Programs WHERE title=%s AND (genre='Reality' OR genre='Adults Only')
+    """,[input_title])
+        titlesGenre = dictfetchall(cursor)
+    if len(titlesGenre) !=0:
+        return True
+    return False
+###################################################################
+def isOrderedBefore(input_title,input_hid):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT * FROM RecordReturns WHERE title=%s AND hID=%s
+    """,[input_title,input_hid])
+        orderedBefore = dictfetchall(cursor)
+    if len(orderedBefore) !=0:
+        return True
+    return False
+###################################################################
+def isCurrentlyHolded(input_title,input_hid):
+    isHolded=False;
+    isHoldedByHid=False;
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT * FROM RecordOrders WHERE title=%s
+    """,[input_title])
+        isHoldedRes = dictfetchall(cursor)
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                    SELECT * FROM RecordOrders WHERE title=%s and hid=%s
+    """,[input_title,input_hid])
+        isHoldedByHidRes = dictfetchall(cursor)
+    if len(isHoldedRes)!=0:
+        isHolded=True
+    if len(isHoldedByHidRes)!=0:
+        isHoldedByHid=True
+    return [isHolded,isHoldedByHid]
+###################################################################
+def addRowToRecordExchange(input_title,input_hid,isOrder):
+    if isOrder == True:
+        with connection.cursor() as cursor:
+            cursor.execute("""INSERT INTO RecordOrders (title, hID) VALUES (%s, %s)""", [input_title, input_hid])
+        connection.close()
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("""INSERT INTO RecordReturns (title, hID) VALUES (%s, %s)""", [input_title, input_hid])
+        connection.close()
+
+
+
 
 
 def orderNewRecord(request):
     if request.method == 'POST' and request.POST:
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT title,genre FROM Programs
-        """)
-            allTitles = dictfetchall(cursor)
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT hID FROM FamilyNumOfOrders WHERE NumberOfOrders=3
-        """)
-            famWithThree = dictfetchall(cursor)
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT * FROM RecordOrders
-        """)
-            alreadyOrdered = dictfetchall(cursor)
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT * FROM RecordReturns
-        """)
-            recordReturns = dictfetchall(cursor)
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT hID
-                        FROM Households
-                        WHERE hID
-                        NOT IN
-                         (SELECT hID FROM HouseHoldsZeroChildren)
-                                                                 """)
-            famsWithChildren = dictfetchall(cursor)
+        # INPUT DATA FROM THE USER
         input_hid = request.POST["hid"]
         input_title = request.POST["title"]
+
+        # CONSTRAINT:if hID does not exist in the DB
+        if hidExist(input_hid) == False:
+            return Records(request, True, "House Hold ID does not exist!")
+        # CONSTRAINT:if title does not exist in the DB
         if programExist(input_title) == False:
-            return Records(request, True, "Title does not exist!",False,"")
-        for row in famWithThree:
-            if int(row['hID']) == int(input_hid):
-                return Records(request, True, "Family is Already holds 3 titles!",False,"")
-        for row in alreadyOrdered:
-            if row['title']==input_title:
-                if int(row['hID']) != int(input_hid):
-                    return Records(request, True, "The movie is ordered by another family and yet to be returned!",False,"")
-                if int(row['hID']) == int(input_hid):
-                    return Records(request, True, "The program is ordered by this family already!",False,"")
-        for row in recordReturns:
-            if row['title'] == input_title and int(row['hID']) == int(input_hid):
-                return Records(request, True, "The movie was already ordered by this family before!",False,"")
-        for row in famsWithChildren:
-            if int(row['hID']) == int(input_hid):
-                for row in allTitles:
-                    if row['title'] == input_title:
-                        if str(row['genre'])==str("Reality") or str(row['genre'])==str("Adults Only"):
-                            return Records(request, True, "The program genre is restricted to families with children!",False,"")
+            return Records(request, True, "Title does not exist!")
 
-        return Records(request,False,"",False,"")
+        # CONSTRAINT:family already holds three titles
+        if(alreadyHoldsThree(input_hid)):
+                return Records(request, True, "Family is Already holds 3 titles!")
 
+        # CONSTRAINT:this title is already holded by this family or another
+        holdData = isCurrentlyHolded(input_title,input_hid)
+        if holdData[0] == True:
+            if holdData[1] == True:
+                return Records(request, True, "The program is ordered by this family already!")
+            else:
+                return Records(request, True, "The movie is ordered by another family and yet to be returned!")
+
+        # CONSTRAINT:this family is already ordered this movie before
+        if isOrderedBefore(input_title, input_hid) == True:
+            return Records(request, True, "The movie was already ordered by this family before!")
+
+        # CONSTRAINT:this family have children and the genre title is restricted
+        if isFamilyWithChildren(input_hid) == True and isRestrictedGenre(input_title) == True:
+            return Records(request, True, "The program genre is restricted to families with children!")
+        # Add the new order
+        addRowToRecordExchange(input_title,input_hid,True)
+        cause = "Order the program " + input_title + " for family number " + input_hid + " was successfully done"
+        return Records(request,True,cause)
 
 
 def returnRecord(request):
@@ -313,27 +381,28 @@ def returnRecord(request):
         connection.close()
         input_hid = request.POST["hid_2"]
         input_title = request.POST["title_2"]
+
+        if hidExist(input_hid) == False:
+            return Records(request, True, "House Hold ID does not exist!")
         if (programExist(input_title) == False):
-            return Records(request, False, "", True, "Title does not exist!")
+            return Records(request,True, "Title does not exist!")
+
         titleOrdered=False
         for row in alreadyOrdered:
             if row['title'] == input_title:
                 titleOrdered=True
                 if int(row['hID']) != int(input_hid):
-                    return Records(request, False, "", True, "The family does not hold this title")
+                    return Records(request, True, "The family does not hold this title")
         if titleOrdered!=True:
-            return Records(request, False, "", True, "Title is not exist in the order list")
-        try:
-            record_order = Recordorders.objects.get(pk=input_title)
-            record_order.delete()
-            with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO RecordReturns (title, hID) VALUES (%s, %s)""",[input_title,input_hid])
+            return Records(request, True,"Title is not exist in the order list")
+
+        # DELETE THE ROW FROM RECORD ORDERS
+        with connection.cursor() as cursor:
+            cursor.execute("""DELETE FROM RecordOrders WHERE title=%s;""", [input_title])
             connection.close()
-        except Recordorders.DoesNotExist:
-            # Handle the exception
-            return Records(request, False, "",True,"exception")
+
+        # ADD THE ROW TO RECORD RETURN
+        addRowToRecordExchange(input_title,input_hid,False)
         cause="Return the program " + input_title + " for family number " + input_hid + " was successfully done"
-
-
-        return Records(request,False,"",True,cause)
+        return Records(request,True,cause)
 
