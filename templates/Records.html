@@ -69,7 +69,26 @@
           </form>
        </div>
 {% if SubmitSent == True %}
-        <h4>{{ cause }}</h4>
+
+    <div id="popup">
+    <div id="questionmark"> <i class="fa fa-exclamation-circle fa-2x"></i></div>
+        <h2 id="pop-title">{{ cause }}</h2>
+
+        <form METHOD="post" action="Records">
+            {% csrf_token %}<button id="confirmbutton">CONFIRM</button></form>
+    </div>
+
+    {% endif %}
+{% if changed == True %}
+
+    <div id="popup">
+    <div id="confirm"> <i class="fa fa-check-circle fa-2x"></i></div>
+        <h2 id="pop-title">{{ cause }}</h2>
+    <form METHOD="post" action="Records">
+            {% csrf_token %}<button id="confirmbutton">CONFIRM</button></form>
+
+    </div>
+
     {% endif %}
 
 <br>

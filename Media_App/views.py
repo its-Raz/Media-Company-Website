@@ -234,14 +234,14 @@ def submitNumber(request):
 
 
 
-def Records(request,SubmitSent=False,cause=""):
+def Records(request,SubmitSent=False,changed=False,cause=""):
     with connection.cursor() as cursor:
         cursor.execute("""
                     SELECT TOP 3 hID,COUNT(title) AS Total_Orders FROM Ever_Ordered GROUP BY hID ORDER BY Total_Orders DESC,hID
     """)
         sql_res1 = dictfetchall(cursor)
 
-    return render(request, 'Records.html', {'sql_res1': sql_res1,'SubmitSent':SubmitSent,'cause':cause})
+    return render(request, 'Records.html', {'sql_res1': sql_res1,'SubmitSent':SubmitSent,'changed':changed,'cause':cause})
 
 
 ###################################################################
@@ -352,34 +352,34 @@ def orderNewRecord(request):
 
         # CONSTRAINT:if hID does not exist in the DB
         if hidExist(input_hid) == False:
-            return Records(request, True, "House Hold ID does not exist!")
+            return Records(request, True,False, "House Hold ID does not exist!")
         # CONSTRAINT:if title does not exist in the DB
         if programExist(input_title) == False:
-            return Records(request, True, "Title does not exist!")
+            return Records(request, True,False, "Title does not exist!")
 
         # CONSTRAINT:family already holds three titles
         if(alreadyHoldsThree(input_hid)):
-                return Records(request, True, "Family is Already holds 3 titles!")
+                return Records(request, True,False, "Family is Already holds 3 titles!")
 
         # CONSTRAINT:this title is already holded by this family or another
         holdData = isCurrentlyHolded(input_title,input_hid)
         if holdData[0] == True:
             if holdData[1] == True:
-                return Records(request, True, "The program is ordered by this family already!")
+                return Records(request, True,False, "The program is ordered by this family already!")
             else:
-                return Records(request, True, "The movie is ordered by another family and yet to be returned!")
+                return Records(request, True,False, "The movie is ordered by another family and yet to be returned!")
 
         # CONSTRAINT:this family is already ordered this movie before
         if isOrderedBefore(input_title, input_hid) == True:
-            return Records(request, True, "The movie was already ordered by this family before!")
+            return Records(request, True,False, "The movie was already ordered by this family before!")
 
         # CONSTRAINT:this family have children and the genre title is restricted
         if isFamilyWithChildren(input_hid) == True and isRestrictedGenre(input_title) == True:
-            return Records(request, True, "The program genre is restricted to families with children!")
+            return Records(request, True,False, "The program genre is restricted to families with children!")
         # Add the new order
         addRowToRecordExchange(input_title,input_hid,True)
         cause = "Order the program " + input_title + " for family number " + input_hid + " was successfully done"
-        return Records(request,True,cause)
+        return Records(request,False,True,cause)
 
 
 def returnRecord(request):
@@ -394,18 +394,18 @@ def returnRecord(request):
         input_title = request.POST["title_2"]
 
         if hidExist(input_hid) == False:
-            return Records(request, True, "House Hold ID does not exist!")
+            return Records(request, True,False, "House Hold ID does not exist!")
         if (programExist(input_title) == False):
-            return Records(request,True, "Title does not exist!")
+            return Records(request,True,False, "Title does not exist!")
 
         titleOrdered=False
         for row in alreadyOrdered:
             if row['title'] == input_title:
                 titleOrdered=True
                 if int(row['hID']) != int(input_hid):
-                    return Records(request, True, "The family does not hold this title")
+                    return Records(request, True,False, "The family does not hold this title")
         if titleOrdered!=True:
-            return Records(request, True,"Title is not exist in the order list")
+            return Records(request, True,False,"Title is not exist in the order list")
 
         # DELETE THE ROW FROM RECORD ORDERS
         with connection.cursor() as cursor:
@@ -415,5 +415,5 @@ def returnRecord(request):
         # ADD THE ROW TO RECORD RETURN
         addRowToRecordExchange(input_title,input_hid,False)
         cause="Return the program " + input_title + " for family number " + input_hid + " was successfully done"
-        return Records(request,True,cause)
+        return Records(request,False,True,cause)
 

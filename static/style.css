@@ -180,6 +180,8 @@ height: 600px;
   padding: 1px;
   text-align: center;
 }
+
+
 #input-box input
 {
   display: block;
@@ -228,4 +230,58 @@ select{
   margin-top:10px ;
 	border-radius:2px;
 	cursor:pointer;
+}
+
+
+#popup
+
+{
+
+  font-weight: 400;
+  position: absolute;
+  top:30%;
+  right: 30%;
+  padding: 15px;
+  background-color: rgba(244, 244, 244, 0.75);
+  border: solid rgba(229, 9, 20, 0.4) 2px;
+
+
+}
+#pop-title
+{
+
+  position: relative;
+  font-weight: 300;
+  padding: 0;
+   margin-bottom:15px ;
+}
+#questionmark
+{
+  margin-bottom: 5px;
+  text-align: center;
+  color: rgba(229, 9, 20, 0.7);
+}
+
+
+#confirmbutton
+{
+   display: block;
+  margin: auto;
+  padding: 3px;
+  background-color: rgba(229, 9, 20, 0.8);
+	outline: none;
+    border: 0;
+    color: #fff;
+	padding:10px 20px;
+  margin-top:10px ;
+	border-radius:2px;
+	cursor:pointer;
+}
+
+
+#confirm
+{
+  margin-bottom: 5px;
+  text-align: center;
+  color: rgba(9, 229, 38, 0.7);
 }
