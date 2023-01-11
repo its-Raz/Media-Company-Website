@@ -16,12 +16,21 @@ def index(request):
 def Query(request):
     with connection.cursor() as cursor:
         cursor.execute("""
-        SELECT DISTINCT TitlesReturnsByZeroFam.genre,AGenresMaxDuration.title,MaxDuration
-FROM
-    AGenresMaxDuration JOIN TitlesReturnsByZeroFam
-ON
-    AGenresMaxDuration.title=TitlesReturnsByZeroFam.title
-ORDER BY genre
+        SELECT distinct genre,min(lower(p1.title)) as lower,min(p1.title) as Title,min(duration) as Duration
+
+from Programs p1, RecordReturns r
+where p1.title = r.title and
+      genre like('A%') and
+      p1.title not in (select p2.title
+                      from Programs p2, Programs p3
+                      where p2.genre = p3.genre and
+                            p2.duration<p3.duration) and
+      p1.title in (select title
+                   from Households h,RecordReturns r2
+                   where h.hID = r2.hID and
+                         h.ChildrenNum = 0)
+group by genre
+order by genre
                             """)
 
         sql_res = dictfetchall(cursor)

@@ -27,11 +27,11 @@
     <th>Genre</th>
     <th>Title</th>
     <th>Duration</th>
-        {% for Movies in sql_res%}
+        {% for item in sql_res%}
             <tr>
-            <td>{{ Movies.genre }} </td>
-            <td>{{ Movies.title }} </td>
-            <td>{{ Movies.MaxDuration }} </td>
+            <td>{{ item.genre }} </td>
+            <td>{{ item.Title }} </td>
+            <td>{{ item.Duration }} </td>
             </tr>
         {% endfor %}
 </table>
