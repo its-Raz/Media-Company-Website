@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Welcome to Al-Netek!</title>
 </head>
-<body>
+<body id="rank-page">
 
 <script src="https://kit.fontawesome.com/7ce0912b14.js" crossorigin="anonymous"></script>
   <header>
@@ -24,15 +24,15 @@
 <div class="container">
 <div id="title">
     <br>
-    <h1>Rankings</h1>
+    <h1>Rankings.</h1>
 </div>
 
 <div id="box"  >
-<h1>Insert New Rank</h1>
+<h2 id="box-title">ADD NEW RANK</h2>
 <form method="POST" action="addNewRank">
 {% csrf_token %}
 <div id="input-box">
-Select Hid <select name="hID" required>
+Select hID <select name="hID" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
 {% for item in sql_res_hid %}
     <option>{{ item.hid }}</option>
@@ -61,7 +61,7 @@ Select rank <select name="rank" required>
 </select>
 </div>
 
-<button>Insert</button>
+<button id="submitbtn">ADD</button>
 </form>
 
 </div>
@@ -70,10 +70,10 @@ Select rank <select name="rank" required>
 
 
 <div id="box">
-<h1>Get Top 5 Spoken Programs</h1>
+<h2 id="box-title">EXPLORE TOP 5 SPOKEN PROGRAM</h2>
 <form method="POST", action="submitNumber">
+<div id="input-box">
     Select Genre
-
     <select name="genre" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
     {% for item in at_least_five %}
@@ -83,15 +83,15 @@ Select rank <select name="rank" required>
 
     {% csrf_token %}
     Min Rank <input type="number" max="1000000000" pattern="[0-9]+" min="0" name = "minNumber" required><br></select>
-
-<button name="submitbtn">Get Spoken Programs</button>
+</div>
+<button id="submitbtn">SEARCH</button>
 <br>
 </form>
-</div>
 
-<br>
-<div id="box">
-<h5>Spoken Programs</h5>
+
+
+
+<h2 id="box-title">RESULT</h2>
     <table border="=1">
     <th>Title</th>
     <th>Average Rank</th>

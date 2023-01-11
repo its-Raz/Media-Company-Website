@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <title>Welcome to Al-Netek!</title>
 </head>
-<body>
+<body id="record-page">
 
 <script src="https://kit.fontawesome.com/7ce0912b14.js" crossorigin="anonymous"></script>
   <header>
@@ -24,8 +24,7 @@
     </nav> </header>
 <div class="container">
 <div id="title">
-    <br>
-    <h1>Records Management</h1>
+    <h1>Records Management.</h1>
 </div>
 
 
@@ -36,7 +35,7 @@
     <form method="POST" action="orderNewRecord">
         {% csrf_token %}
         <div id="input-box">
-            <label id="hidlabel">HouseHold ID</label>
+            <label id="hidlabel">House Hold ID</label>
         <input id="input-field"  type="number" max="1000000000" pattern="[0-9]+" min="0"  name="hid" required>
 
         </div>
@@ -57,7 +56,7 @@
      <form method="POST" action="returnRecord">
     {% csrf_token %}
     <div id="input-box">
-         <label id="hidlabel">HouseHold ID</label>
+         <label id="hidlabel">House Hold ID</label>
         <input   type="number" max="1000000000" pattern="[0-9]+" min="0"  name="hid_2" required>
 
     </div>
@@ -75,7 +74,7 @@
 
 <br>
 <div id="box">
-<h2>Top 3 HouseHold ID Customers Orders</h2>
+<h2 id="box-title"> Top 3 hID Clients</h2>
        <table border="=1" >
     <th>hID</th>
     <th>Total Orders</th>

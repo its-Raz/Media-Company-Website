@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Welcome to Al-Netek!</title>
 </head>
-<body>
+<body id="query-page">
 
 <script src="https://kit.fontawesome.com/7ce0912b14.js" crossorigin="anonymous"></script>
   <header>
@@ -23,11 +23,10 @@
     </nav> </header>
 <div class="container">
 <div id="title">
-    <br>
-    <h1>Queries</h1>
+    <h1>Queries.</h1>
 </div>
 <div id="box">
-      <h3>Query 1</h3>
+      <h2 id="box-title">QUERY 1</h2>
        <table border="=1" >
     <th>Genre</th>
     <th>Title</th>
@@ -42,7 +41,7 @@
 </table>
 </div>
 <div id="box">
-<h3>Query 2</h3>
+<h2 id="box-title">QUERY 2</h2>
        <table border="=1" >
     <th>Title</th>
     <th>Average Rank</th>
@@ -55,7 +54,7 @@
 </table>
 </div>
     <div id="box">
-<h3>Query 3</h3>
+<h2 id="box-title">QUERY 3</h2>
        <table border="=1" >
     <th>Title</th>
         {% for Movies in sql_res3%}
