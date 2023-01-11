@@ -49,7 +49,7 @@ ORDER BY rank DESC ,LR.title
         sql_res3 = dictfetchall(cursor)
 
         return render(request, 'Query.html', {'sql_res': sql_res, 'sql_res2': sql_res2, 'sql_res3': sql_res3})
-
+#
 def Rankings(request,X=9999,genre = 'defValue'):
     with connection.cursor() as cursor:
         cursor.execute("""
