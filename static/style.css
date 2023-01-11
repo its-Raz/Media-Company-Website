@@ -168,11 +168,10 @@ height: 600px;
 /*    text-align: center;*/
 /*}*/
 
-/*#input-box*/
-/*{*/
-/*  position:relative;*/
-/*	margin-bottom:25px;*/
-/*}*/
+#input-box
+{
+  padding: 3px;
+}
 
 /*#input-box label{*/
 /*  position:absolute;*/
@@ -232,5 +231,5 @@ height: 600px;
 
 #submitbtn
 {
-  display: flex;
+  padding: 3px;
 }

@@ -22,8 +22,12 @@
       </div>
     </nav> </header>
 <div class="container">
+<div id="title">
+    <br>
+    <h1>Rankings</h1>
+</div>
 
-<div id="box"  style=" margin-top: 5%">
+<div id="box"  >
 <h1>Insert New Rank</h1>
 <form method="POST" action="addNewRank">
 {% csrf_token %}
@@ -35,7 +39,7 @@ Select Hid <select name="hID" required>
     {% endfor %}
 </select>
 </div>
-<br>
+
 <div id="input-box">
 Select Program Name <select  name="title" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
@@ -44,7 +48,8 @@ Select Program Name <select  name="title" required>
     {% endfor %}
 </select>
 </div>
-<br>
+
+
 <div id="input-box">
 Select rank <select name="rank" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
@@ -55,15 +60,16 @@ Select rank <select name="rank" required>
     <option value=5>5</option>
 </select>
 </div>
-<br>
+
 <button>Insert</button>
 </form>
+
 </div>
-<br>
+
 <br>
 
 
-<div id="box2">
+<div id="box">
 <h1>Get Top 5 Spoken Programs</h1>
 <form method="POST", action="submitNumber">
     Select Genre
@@ -74,17 +80,17 @@ Select rank <select name="rank" required>
         <option>{{ item.genre }}</option>
     {% endfor %}
     </select>
-<br>
+
     {% csrf_token %}
     Min Rank <input type="number" max="1000000000" pattern="[0-9]+" min="0" name = "minNumber" required><br></select>
-<br>
-<button name="getSpoken">Get Spoken Programs</button>
+
+<button name="submitbtn">Get Spoken Programs</button>
 <br>
 </form>
 </div>
 
 <br>
-<div id="box4">
+<div id="box">
 <h5>Spoken Programs</h5>
     <table border="=1">
     <th>Title</th>
@@ -97,6 +103,7 @@ Select rank <select name="rank" required>
         {% endfor %}
 
 </table>
+</div>
 </div>
 
 
