@@ -52,7 +52,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
                             select hid from Households
                         """)
         sql_res_hid = dictfetchall(cursor)
-
+#
         cursor.execute("""
                                     select title from Programs
                                 """)
