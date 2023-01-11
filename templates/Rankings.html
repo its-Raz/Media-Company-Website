@@ -23,23 +23,29 @@
     </nav> </header>
 <div class="container">
 
+<div id="box"  style=" margin-top: 5%">
+<h1>Insert New Rank</h1>
 <form method="POST" action="addNewRank">
 {% csrf_token %}
+<div id="input-box">
 Select Hid <select name="hID" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
 {% for item in sql_res_hid %}
     <option>{{ item.hid }}</option>
     {% endfor %}
 </select>
+</div>
 <br>
-
+<div id="input-box">
 Select Program Name <select  name="title" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
 {% for item in sql_res_programs_names %}
     <option>{{ item.title }}</option>
     {% endfor %}
 </select>
+</div>
 <br>
+<div id="input-box">
 Select rank <select name="rank" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
     <option value=1>1</option>
@@ -48,28 +54,37 @@ Select rank <select name="rank" required>
     <option value=4>4</option>
     <option value=5>5</option>
 </select>
+</div>
 <br>
-<button>Submit</button>
+<button>Insert</button>
 </form>
+</div>
 <br>
 <br>
 
 
-
+<div id="box2">
+<h1>Get Top 5 Spoken Programs</h1>
 <form method="POST", action="submitNumber">
-    Select Genre (at least 5 programs belongs to each)
+    Select Genre
+
     <select name="genre" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
     {% for item in at_least_five %}
         <option>{{ item.genre }}</option>
     {% endfor %}
     </select>
+<br>
     {% csrf_token %}
-    Min Rank: <input type="number" name = "minNumber" required><br></select>
+    Min Rank <input type="number" min="0" name = "minNumber" required><br></select>
+<br>
 <button name="getSpoken">Get Spoken Programs</button>
+<br>
 </form>
+</div>
 
 <br>
+<div id="box4">
 <h5>Spoken Programs</h5>
     <table border="=1">
     <th>Title</th>
@@ -82,8 +97,8 @@ Select rank <select name="rank" required>
         {% endfor %}
 
 </table>
-
 </div>
+
 
 
 

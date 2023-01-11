@@ -108,7 +108,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
                                                                 and p1.genre = p.genre
                                                                 group by pp.title
                                                                 having count(pp.title) >= %s) as Spoken
-                                    where Spoken.title = pr.title) and genre = %s """, [genre, X, genre])
+                                    where Spoken.title = pr.title) and genre = %s order by title asc""", [genre, X, genre])
         not_spoken_titles = dictfetchall(cursor)
 
         how_many_add = 5 - len(top_five_spoken_genre)
