@@ -141,17 +141,15 @@ height: 600px;
     display: block;
     text-align: center;}
 
-/*#box*/
-/*{*/
-/*  position:absolute;*/
-/*    left:80%;*/
-
-/*	top:40%;*/
-/*	transform: translate(-50%,-50%);*/
-/*    background-color: rgba(0, 0, 0, 0.89);*/
-/*	border-radius:3px;*/
-/*	padding:70px 100px;*/
-/*}*/
+#box
+{
+  display: inline-block;
+  padding: 20px;
+}
+#box2
+{
+  display: inline-block;
+}
 
 /*#box2*/
 /*{*/
@@ -229,3 +227,8 @@ height: 600px;
 /*    position: absolute;*/
 /*    left:50%;*/
 /*}*/
+
+#submitbtn
+{
+  display: flex;
+}
