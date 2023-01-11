@@ -24,13 +24,14 @@
     </nav> </header>
 <div class="container">
 <div id="title">
+    <br>
     <h1>Records Management</h1>
 </div>
 
 
 
     <div id="box">
-    <h1 id="box-title">ORDER RECORD</h1>
+    <h2 id="box-title">ORDER RECORD</h2>
 
     <form method="POST" action="orderNewRecord">
         {% csrf_token %}
@@ -51,9 +52,8 @@
     </div>
 
 
-    <div id="box2">
-        <br>
-    <h1 id="box-title">RETURN RECORD</h1>
+    <div id="box">
+    <h2 id="box-title">RETURN RECORD</h2>
      <form method="POST" action="returnRecord">
     {% csrf_token %}
     <div id="input-box">
@@ -74,7 +74,8 @@
     {% endif %}
 
 <br>
-<h1>Top 3 HouseHold ID Customers Orders</h1>
+<div id="box">
+<h2>Top 3 HouseHold ID Customers Orders</h2>
        <table border="=1" >
     <th>hID</th>
     <th>Total Orders</th>
@@ -85,6 +86,7 @@
             </tr>
         {% endfor %}
      </table>
+</div>
 
 </div>
 

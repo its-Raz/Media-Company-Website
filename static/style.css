@@ -145,6 +145,8 @@ height: 600px;
 {
   display: inline-block;
   padding: 20px;
+  background-color: rgba(244, 244, 244, 0.58);
+  border: solid white 2px;
 }
 #box2
 {
