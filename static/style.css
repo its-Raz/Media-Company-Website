@@ -205,27 +205,17 @@ height: 600px;
 }
 #input-box input:focus ~ label,
 #input-box input:valid ~ label{
-	left:-40px;
+	left:-35px;
   color: #E50914;
 
 
 
 }
+#input-box input:focus ~ #hidlabel,
+#input-box input:valid ~ label{
+	left:-100px;
+  color: #E50914;
 
 
 
-#box4
-{
-  position:absolute;
-	left:80%;
-	top:80%;
-	transform: translate(-50%,-50%);
-    background-color: rgba(0, 0, 0, 0.89);
-	border-radius:3px;
-	padding:70px 100px;
 }
-
-
-
-
-
