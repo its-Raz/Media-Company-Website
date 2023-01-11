@@ -52,7 +52,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
                             select hid from Households
                         """)
         sql_res_hid = dictfetchall(cursor)
-
+#
         cursor.execute("""
                                     select title from Programs
                                 """)
@@ -76,7 +76,8 @@ def Rankings(request,X=9999,genre = 'defValue'):
                                                        """, [X])
         spoken_program = dictfetchall(cursor)
 
-        cursor.execute("""select top 5 genre,pr.title,round(avg(cast(pr.rank as float)),2) as Average_Rank
+        cursor.execute("""
+        select top 5 genre,pr.title,round(avg(cast(pr.rank as float)),2) as Average_Rank
         from ProgramRanks pr, (select pp.title,count(pp.title) countRanks ,min(p.genre)  as genre
                                     from ProgramRanks pp,Programs p
                                     where pp.title = p.title and genre = %s -- put here the parameter
@@ -89,17 +90,16 @@ def Rankings(request,X=9999,genre = 'defValue'):
         top_five_spoken_genre = dictfetchall(cursor)
 
 
-        cursor.execute(""" select title, 0 as Average_Rank
-                            from  Programs p1
+        cursor.execute("""select title, 0 as Average_Rank
+            from  Programs p1
                             where title not in (select pr.title
                                     from ProgramRanks pr, (select pp.title,count(pp.title) countRanks ,min(p.genre)  as genre
                                                                 from ProgramRanks pp,Programs p
-                                                                where pp.title = p.title and p.genre = %s -- put here the parameter
+                                                                where pp.title = p.title and p.genre = %s-- put here the parameter
                                                                 and p1.genre = p.genre
                                                                 group by pp.title
                                                                 having count(pp.title) >= %s) as Spoken
-                                    where Spoken.title = pr.title) and genre is not null
-                                    """, [genre, X])
+                                    where Spoken.title = pr.title) and genre = %s """, [genre, X, genre])
         not_spoken_titles = dictfetchall(cursor)
 
         how_many_add = 5 - len(top_five_spoken_genre)
@@ -120,15 +120,17 @@ def addNewRank(request):
         hid = request.POST["hID"]
         rank = request.POST["rank"]
 
-        new_content = Programranks(title = Programs(title),
-                              hid= Households(hid),
-                              rank = int(rank))
-        new_content.save()
+
+        with connection.cursor() as cursor:
+            cursor.execute(""" select %s,%s from ProgramRanks""", [title, hid])
+            all_title_hid = dictfetchall(cursor)
+            if len(all_title_hid) > 0:
+                cursor.execute("""DELETE FROM ProgramRanks WHERE title = %s and hid = %s""", [title, hid])
+
+            cursor.execute("""INSERT INTO ProgramRanks (title, hID,rank) VALUES (%s, %s,%s)""", [title, hid, rank])
+        connection.close()
+
     return Rankings(request)
-
-
-
-
 
 
 
