@@ -23,23 +23,29 @@
     </nav> </header>
 <div class="container">
 
+<div id="box"  style=" margin-top: 5%">
+<h2 style="color: white;">Insert New Rank</h2>
 <form method="POST" action="addNewRank">
 {% csrf_token %}
+<div id="input-box">
 Select Hid <select name="hID" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
 {% for item in sql_res_hid %}
     <option>{{ item.hid }}</option>
     {% endfor %}
 </select>
+</div>
 <br>
-
+<div id="input-box">
 Select Program Name <select  name="title" required>
 <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
 {% for item in sql_res_programs_names %}
     <option>{{ item.title }}</option>
     {% endfor %}
 </select>
+</div>
 <br>
+<div id="input-box">
 Select rank <select name="rank" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
     <option value=1>1</option>
@@ -48,16 +54,20 @@ Select rank <select name="rank" required>
     <option value=4>4</option>
     <option value=5>5</option>
 </select>
+</div>
 <br>
-<button>Submit</button>
+<button>Insert</button>
 </form>
+</div>
 <br>
 <br>
 
 
-
+<div id="box2">
+<h2 style="color: white;">Get Top 5 Spoken Programs</h2>
 <form method="POST", action="submitNumber">
     Select Genre (at least 5 programs belongs to each)
+
     <select name="genre" required>
     <option selected="true" disabled = "disabled" value="">-- Select an option --</option>
     {% for item in at_least_five %}
@@ -68,8 +78,10 @@ Select rank <select name="rank" required>
     Min Rank: <input type="number" name = "minNumber" required><br></select>
 <button name="getSpoken">Get Spoken Programs</button>
 </form>
+</div>
 
 <br>
+<div id="box4">
 <h5>Spoken Programs</h5>
     <table border="=1">
     <th>Title</th>
@@ -82,8 +94,8 @@ Select rank <select name="rank" required>
         {% endfor %}
 
 </table>
-
 </div>
+
 
 
 

@@ -211,3 +211,21 @@ height: 600px;
 
 
 }
+
+
+
+#box4
+{
+  position:absolute;
+	left:80%;
+	top:80%;
+	transform: translate(-50%,-50%);
+    background-color: rgba(0, 0, 0, 0.89);
+	border-radius:3px;
+	padding:70px 100px;
+}
+
+
+
+
+
