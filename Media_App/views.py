@@ -53,11 +53,6 @@ ORDER BY rank DESC ,LR.title
 def Rankings(request,X=9999,genre = 'defValue'):
     with connection.cursor() as cursor:
         cursor.execute("""
-                    SELECT genre FROM GenresWithMoreThanFiveP
-        """)
-        sql_res1 = dictfetchall(cursor)
-
-        cursor.execute("""
                             select hid from Households
                         """)
         sql_res_hid = dictfetchall(cursor)
@@ -118,7 +113,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
 
 #רשימה של מילונים
 
-    return render(request, 'Rankings.html', {'sql_res1': sql_res1, 'sql_res_hid': sql_res_hid,
+    return render(request, 'Rankings.html', { 'sql_res_hid': sql_res_hid,
                                              'sql_res_programs_names': sql_res_programs_names,
                                              'at_least_five': at_least_five,'spoken_program': spoken_program,
                                              'top_five_spoken_genre': top_five_spoken_genre})
