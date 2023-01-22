@@ -1,7 +1,7 @@
 CREATE VIEW Ever_Ordered
 AS
 SELECT DISTINCT title,hID FROM  (SELECT *
-FROM RecordOrders UNION SELECT * FROM RecordReturns) AS EVER_ORDERED
+FROM RecordOrders UNION SELECT * FROM RecordReturns) AS EVER_ORDERED;
 
 GO
 
@@ -46,3 +46,5 @@ GO
 CREATE VIEW HouseHoldsZeroChildren
 AS
 SELECT hID FROM Households WHERE ChildrenNum=0;
+
+
