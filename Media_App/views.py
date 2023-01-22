@@ -36,7 +36,7 @@ order by genre
         sql_res = dictfetchall(cursor)
 
         cursor.execute("""
-        SELECT LR.title AS Title,rank AS Average_Rank FROM More_Than_3_Legal_Rates LR JOIN Programs_AVG_Rank PR ON LR.title=PR.title
+        SELECT LR.title AS Title,rank AS Average_Rank FROM More_Than_3_Legal_Rates LR JOIN Average_Rank PR ON LR.title=PR.title
 ORDER BY rank DESC ,LR.title
                                        
                                             """)
