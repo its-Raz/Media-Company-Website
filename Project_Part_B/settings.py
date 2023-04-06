@@ -131,10 +131,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASES = {
 'default': {
 'ENGINE': 'mssql',
-'NAME': 'raz0biton',
-'USER': 'raz0biton',
-'PASSWORD': 'Qwerty12!',
-'HOST': 'techniondbcourse01.database.windows.net',
-'PORT': '1433',
+'NAME': '',
+'USER': '',
+'PASSWORD:'',
+'HOST': '',
+'PORT': '',
 'OPTIONS': {"driver": "ODBC Driver 17 for SQL Server",
 }},}
