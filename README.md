@@ -19,9 +19,9 @@
 # Overview
 **Overiew**
 
-|                    <div style="text-align:center;"> Home Page                            | 
+|                     Home Page                            | 
 | :------------------------------------------------------ | 
-|          <div style="text-align:center;"><img src="./presentation/home.JPG" width=100%>   |
+|          <div style="text-align:center;"> <img src="./presentation/home.JPG" width="100%"> </div>   |
 # Full-Specifications
 **Full-Specifications**
  [([ds_algs_specs.pdf](https://github.com/its-Raz/ds-algs/blob/master/ds_algs_spec.pdf))]
