@@ -4,7 +4,9 @@
 This project is a website built using Django, HTML, CSS, and incorporates database queries with SQL. The website facilitates recording and returning programs, as well as rating programs by users under specific family names. Users can place recording orders, which are validated against several conditions such as program availability and family recording limits. They can also return recordings, updating corresponding database relationships. Additionally, users can rate programs on a scale of 1 to 5, with the new rating replacing any previous rating under the same family name.
 Here's an example illustrating how the order and return of records work, along with how they are updated in the database:
 
-![](https://github.com/its-Raz/Media-Company-Website/blob/master/presentation/order_return.gif)
+<div align="center" style="text-align:center;">
+    <img src="https://github.com/its-Raz/Media-Company-Website/blob/master/presentation/order_return.gif">
+</div>
 </p>
 
 
