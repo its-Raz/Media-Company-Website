@@ -19,9 +19,9 @@
 # Overview
 **Overiew**
 
-|                     Home Page                            | 
+|                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Home Page (with data base)</h5>                            | 
 | :------------------------------------------------------ | 
-|          <div style="text-align:center;"> <img src="./presentation/home.JPG" width="100%"> </div>   |
+|         <img src="./presentation/home.JPG" width="100%">   |
 # Full-Specifications
 **Full-Specifications**
  [([ds_algs_specs.pdf](https://github.com/its-Raz/ds-algs/blob/master/ds_algs_spec.pdf))]
