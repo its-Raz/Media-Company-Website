@@ -33,7 +33,7 @@ you can find the full specifications for each query [HERE](https://github.com/it
 |                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Records Mangament Page</h5>                            | 
 | :------------------------------------------------------ | 
 |         <img src="./presentation/record.JPG" width="100%">   |
-This page outlines three parts:
+|This page outlines three parts:
 1. Recording Order:
 - Users input the family name and desired program in a form, with a submission button.
 - Error message appears if family identifier doesn't exist.
@@ -45,7 +45,7 @@ This page outlines three parts:
 - Error messages displayed if program doesn't exist or isn't owned by the family.
 - If return is approved, update RecordOrders (remove the order) and RecordReturns (add returned recording) relationships.
 3. Recording Query Documentation:
-- Additionally, a table displays the top three families based on the highest total number of programs ordered and the number of programs they have ordered, sorted in descending order by the number of programs ordered.
+- Additionally, a table displays the top three families based on the highest total number of programs ordered and the number of programs they have ordered, sorted in descending order by the number of programs ordered.|
 # Full-Specifications
 **Full-Specifications**
 
