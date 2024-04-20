@@ -52,7 +52,7 @@ This page outlines three parts:
 
   |                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Ranking Page</h5>                            | 
 | :------------------------------------------------------ | 
-|         <img src="./presentation/record.JPG" width="100%">   |
+|         <img src="./presentation/ranking.JPG" width="100%">   |
 
 This page allows users to rate programs (integer between 1 and 5) under any family name. The new rating will be stored in the ProgramRanks relationship.
   
