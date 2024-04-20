@@ -26,15 +26,13 @@
 |                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Queries Page</h5>                            | 
 | :------------------------------------------------------ | 
 |         <img src="./presentation/query.JPG" width="100%">   |
-
-This page retrive the newest queries result from the data base.
-you can find the full specifications for each query [HERE](https://github.com/its-Raz/Media-Company-Website/blob/master/presentation/queries_spec.JPG)
+|This page retrive the newest queries result from the data base.
+you can find the full specifications for each query [HERE](https://github.com/its-Raz/Media-Company-Website/blob/master/presentation/queries_spec.JPG)|
 
 
 |                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Records Mangament Page</h5>                            | 
 | :------------------------------------------------------ | 
 |         <img src="./presentation/record.JPG" width="100%">   |
-
 This page outlines three parts:
 1. Recording Order:
 - Users input the family name and desired program in a form, with a submission button.
