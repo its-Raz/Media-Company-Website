@@ -12,12 +12,22 @@
 
 # Contents
 
-- [Test](#test)
-- [Full-Specifications](#Full-Specifications)
+- [Overiew](#Overiew)
+- [Setup](#Setup)
 
 
 # Overview
 **Overiew**
+
+|                    Home Page                            | 
+| :------------------------------------------------------ | 
+|         <img src="./presentation/home.JPG" width=45%>   |
+# Full-Specifications
+**Full-Specifications**
+ [([ds_algs_specs.pdf](https://github.com/its-Raz/ds-algs/blob/master/ds_algs_spec.pdf))]
+ 
+ # Setup
+**Setup**
 
 1. Clone this repository and 
 
