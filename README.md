@@ -21,7 +21,7 @@
 
 |                    Home Page                            | 
 | :------------------------------------------------------ | 
-|         <img src="./presentation/home.JPG" width=45%>   |
+|         <img src="./presentation/home.JPG" width=75%>   |
 # Full-Specifications
 **Full-Specifications**
  [([ds_algs_specs.pdf](https://github.com/its-Raz/ds-algs/blob/master/ds_algs_spec.pdf))]
