@@ -50,7 +50,7 @@ This page outlines three parts:
 3. Recording Query Documentation:
 - Additionally, a table displays the top three families based on the highest total number of programs ordered and the number of programs they have ordered, sorted in descending order by the number of programs ordered.
 
-  |                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Ranking Page</h5>                            | 
+|                     <h5 align='center' style="text-align:center; font-weight:bold; font-size:2.5em"> Ranking Page</h5>                            | 
 | :------------------------------------------------------ | 
 |         <img src="./presentation/ranking.JPG" width="100%">   |
 
