@@ -19,7 +19,7 @@
 # Overview
 **Overiew**
 
-|                    Home Page                            | 
+|                    <div style="text-align:center;"> Home Page                            | 
 | :------------------------------------------------------ | 
 |          <div style="text-align:center;"><img src="./presentation/home.JPG" width=100%>   |
 # Full-Specifications
