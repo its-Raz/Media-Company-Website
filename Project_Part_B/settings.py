@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'Project_Part_B.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / '\mydatabase.db"',
     }
 }
 
@@ -128,13 +128,13 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATABASES = {
-'default': {
-'ENGINE': 'mssql',
-'NAME': '',
-'USER': '',
-'PASSWORD:'',
-'HOST': '',
-'PORT': '',
-'OPTIONS': {"driver": "ODBC Driver 17 for SQL Server",
-}},}
+# DATABASES = {
+# 'default': {
+# 'ENGINE': 'mssql',
+# 'NAME': '',
+# 'USER': '',
+# 'PASSWORD:'',
+# 'HOST': '',
+# 'PORT': '',
+# 'OPTIONS': {"driver": "ODBC Driver 17 for SQL Server",
+# }},}
