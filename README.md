@@ -3,7 +3,7 @@
 <p align='center' style="text-align:center;font-size:1em;">
   
 
-![](https://github.com/its-Raz/Media-Company-Website/blob/01d88749ca5405af18e493db7eb3760ef6e8aa64/presentation/order_return.gif)
+![](https://github.com/its-Raz/Media-Company-Website/presentation/order_return.gif)
 </p>
 
 
