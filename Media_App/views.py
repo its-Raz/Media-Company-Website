@@ -53,7 +53,7 @@ ORDER BY rank DESC ,LR.title
 def Rankings(request,X=9999,genre = 'defValue'):
     with connection.cursor() as cursor:
         cursor.execute("""
-                            select hid from Households
+                            select hID from Households
                         """)
         sql_res_hid = dictfetchall(cursor)
 #
@@ -81,7 +81,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
         spoken_program = dictfetchall(cursor)
 
         cursor.execute("""
-        select top 5 genre,pr.title,round(avg(cast(pr.rank as float)),2) as Average_Rank
+        select genre,pr.title,round(avg(cast(pr.rank as float)),2) as Average_Rank
         from ProgramRanks pr, (select pp.title,count(pp.title) countRanks ,min(p.genre)  as genre
                                     from ProgramRanks pp,Programs p
                                     where pp.title = p.title and genre = %s -- put here the parameter
@@ -89,7 +89,7 @@ def Rankings(request,X=9999,genre = 'defValue'):
                                     having count(pp.title) >= %s) as Spoken
         where Spoken.title = pr.title and genre is not null
         group by genre,pr.title
-        order by round(avg(cast(pr.rank as float)),2) desc""", [genre, X])
+        order by round(avg(cast(pr.rank as float)),2) desc LIMIT 5""", [genre, X])
 
         top_five_spoken_genre = dictfetchall(cursor)
 
@@ -129,7 +129,7 @@ def addNewRank(request):
             cursor.execute(""" select %s,%s from ProgramRanks""", [title, hid])
             all_title_hid = dictfetchall(cursor)
             if len(all_title_hid) > 0:
-                cursor.execute("""DELETE FROM ProgramRanks WHERE title = %s and hid = %s""", [title, hid])
+                cursor.execute("""DELETE FROM ProgramRanks WHERE title = %s and hID = %s""", [title, hid])
 
             cursor.execute("""INSERT INTO ProgramRanks (title, hID,rank) VALUES (%s, %s,%s)""", [title, hid, rank])
         connection.close()
@@ -232,7 +232,7 @@ def submitNumber(request):
 def Records(request,SubmitSent=False,changed=False,cause=""):
     with connection.cursor() as cursor:
         cursor.execute("""
-                    SELECT TOP 3 hID,COUNT(title) AS Total_Orders FROM Ever_Ordered GROUP BY hID ORDER BY Total_Orders DESC,hID
+                    SELECT hID,COUNT(title) AS Total_Orders FROM Ever_Ordered GROUP BY hID ORDER BY Total_Orders DESC,hID LIMIT 3
     """)
         sql_res1 = dictfetchall(cursor)
 
